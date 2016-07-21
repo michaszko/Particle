@@ -7,6 +7,7 @@ class Matrix:
 		self.matrix = [ [ -cos(angle), sin(angle) ], [ -sin(angle), -cos(angle) ] ]
 			
 	def __add__(self, other):
+		"""Dodawanie dwóch macierzy do siebie, czyli odpowiednich elementów macierzowych"""
 		tmp = [[0 for x in range(2)] for y in range(2)] 
 	
 		for i in range(2):
@@ -17,6 +18,7 @@ class Matrix:
 		
 		
 	def __mul__(self, other):
+		"""Mnożenie macierzowe"""
 		tmp = [[0 for x in range(2)] for y in range(2)] 
 	
 		for i in range(2):
@@ -27,6 +29,7 @@ class Matrix:
 		return Matrix(tmp)
 	
 	def transposition( self ):
+		"""Transponuje macierz"""
 		(self.matrix[1][0], self.matrix[0][1]) = (self.matrix[0][1], self.matrix[1][0])
 		
 
