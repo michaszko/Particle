@@ -27,8 +27,6 @@ class Vector( object ):
 	@classmethod
 	def matrix_mult( cls, matrix, vector):
 		"""Zwraca wektor pomnożony przez podaną macierz"""
-		#product = tuple(Vector( *row ) * vector for row in matrix)
-		#return Vector( *product )
 		x, y = vector.xy
 		return cls( matrix.matrix[0][0] * x + matrix.matrix[0][1] * y, matrix.matrix[1][0] * x + matrix.matrix[1][1] * y )
 		
@@ -63,7 +61,8 @@ class Vector( object ):
 			return Vector( *mult )
 		
 	def __div__( self, scalar ):
-		return Vector( a / scalar for a in self )
+		divided = tuple(a / scalar for a in self )
+		return Vector( *divided )
 	
 	def __iter__(self):
 		return self.xy.__iter__()
