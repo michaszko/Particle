@@ -1,56 +1,56 @@
 if __name__ == "__main__":
 
-	from Particle import *
+	from QuadTree import *
 
 	pygame.init()
 	
-	screen = pygame.display.set_mode( ( WINDOW_X, WINDOW_Y ) )
+	#screen settings
+	screen = pygame.display.set_mode( ( int(WINDOW_X * 2), int(WINDOW_Y * 2) ) )
 
 	done = False
 	
-	#tworzymy liste particli
-	my_particles = []
-	my_particles.extend(add_particles(screen, 30, (255, 0 , 0)))
-	my_particles.extend(add_particles(screen, 30, (0, 255 , 0)))
-	my_particles.extend(add_particles(screen, 30, (0, 0 , 255)))
+	number_of_particles = 300
 	
-	#tworzymy listę koldujących ze sobą particli
-	collided = []
+	#create list of particle
+	my_particles = []
+	my_particles.extend(addParticles(screen, number_of_particles, (255, 0 , 0)))
+	my_particles.extend(addParticles(screen, number_of_particles, (0, 255 , 0)))
+	my_particles.extend(addParticles(screen, number_of_particles, (0, 0 , 255)))
+	
+	#create quad tree
+	quadtree = QuadTree( 0, Border( -WINDOW_X, -WINDOW_Y, WINDOW_X * 2, WINDOW_Y * 2 ) )
 
-	#startujemy zegarek
+	#starting clock
 	clock = pygame.time.Clock()
 	
-	#ustawaimy czas pierwszej klatki
-	deltatime = 0.1
+	#set time of first frame
+	deltatime = 0.02
 
 	while not done:
+	
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				done = True
-		
-		#czyścimy ekran
-		screen.fill((0, 0, 0))
-		
-		#sprawdzamy dla każdych dwóch particli czy się nie zderzyły
-		for i, particle in enumerate(my_particles):
-		
-			for particle2 in my_particles[i+1:]:
-			
-				if (particle, particle2) not in collided and if_collide(particle, particle2) == True:		#jeśli się zderzyły nie nie zderzyły się w poprzedniej klatce to
-					collide(particle, particle2)															#zmień ich prędkość
-					collided.append((particle, particle2))													#i dodaj do listy ostatnio odbitych
-					
-				elif (particle, particle2) in collided and if_collide(particle, particle2) == False:		#jeśli się nie zdrzyły ale zderzyłys się w porzedniej klatce to
-					collided.remove((particle, particle2))													#usuń z listy ostatnio odbitych
-					
-			#jeśli particle są na liście i zderzyły się do nie nastapi odbicie - będą dla siebie transparentne
 
-			particle.update(deltatime)
-			particle.draw()
+		#add all of particle to quad tree
+		for element in my_particles:
+			quadtree.insert( element )
 		
-		#print(my_particles[0])
+		#find collision
+		quadtree.DFS()
+		
+		#update and draw particles
+		for element in my_particles:
+			element.update(deltatime)
+			element.draw()
+		
+		#clear quad tree
+		quadtree.clearTree()
 
 		pygame.display.update()
 		
-		#stąd bierzemy czas jaki upłynął od ostatniej klatki ( w sekundach )
-		deltatime = clock.tick(60) * 0.001
+		#time of frame
+		#deltatime = clock.tick(60) * 0.001
+		
+		#clear screen
+		screen.fill((0, 0, 0))
