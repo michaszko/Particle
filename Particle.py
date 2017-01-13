@@ -1,6 +1,5 @@
 from Vector import *
 from random import randint, randrange
-from numba import jit, autojit
 import pygame
 
 #window resolution
@@ -24,7 +23,7 @@ def ifCollide( ball1, ball2 ):
 	else:
 		return False
 
-@jit
+
 def collision( ball1, ball2 ):
 	"""
 		Changing parameters of particles

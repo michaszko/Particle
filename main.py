@@ -1,7 +1,7 @@
 if __name__ == "__main__":
 
 	from QuadTree import *
-
+	
 	pygame.init()
 	
 	#screen settings
@@ -50,7 +50,7 @@ if __name__ == "__main__":
 		pygame.display.update()
 		
 		#time of frame
-		#deltatime = clock.tick(60) * 0.001
+		#deltatime = clock.tick() * 0.001
 		
 		#clear screen
 		screen.fill((0, 0, 0))
